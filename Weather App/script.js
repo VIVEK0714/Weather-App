@@ -13,12 +13,15 @@ async function checkWeather(city) {
     document.querySelector(".weather").style.display = "none";
   } else {
     let data = await response.json();
-
+    console.log(data);
     document.querySelector(".temperature").innerHTML =
       Math.round(data.main.temp) + "°c";
     document.querySelector(".city").innerHTML = data.name;
+    document.querySelector(".sunrise").innerHTML = new Date((data.sys.sunrise)*1000).toLocaleTimeString();
+    document.querySelector(".sunset").innerHTML = new Date((data.sys.sunset)*1000).toLocaleTimeString();
     document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
     document.querySelector(".wind").innerHTML = data.wind.speed + "km/h";
+
 
     if (data.weather[0].main == "Clouds") {
       weatherIcon.src = "images/clouds.png";
@@ -37,6 +40,13 @@ async function checkWeather(city) {
     document.querySelector(".error").style.display = "none";
   }
 }
-searchedBtn.addEventListener("click", () => {
+  searchedBtn.addEventListener("click", () => {
     checkWeather(searchedcity.value);
-  });
+});
+
+searchedcity.addEventListener("keyup", (event) => {
+    if (event.key === "Enter") {
+        checkWeather(searchedcity.value);
+    }
+});
+
